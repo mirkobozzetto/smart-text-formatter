@@ -1,6 +1,6 @@
 # Text Formatter
 
-A simple text formatter that helps structure your text by adding line breaks after punctuation marks.
+A simple text formatter that helps structure your text by adding line breaks after punctuation marks. Buddy format your texts to make them breathe: [text-buddy.vercel.app](https://text-buddy.vercel.app/)
 
 ## Features
 
