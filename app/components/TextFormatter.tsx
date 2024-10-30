@@ -42,9 +42,12 @@ export const TextFormatter = () => {
       </button>
 
       <div className="relative">
-        <pre className="p-4 border rounded w-full min-h-[160px] font-sans whitespace-pre-wrap resize-y">
-          {formattedText}
-        </pre>
+        <textarea
+          className="p-4 border rounded w-full min-h-[160px] font-sans resize-y"
+          value={formattedText}
+          onChange={(e) => setFormattedText(e.target.value)}
+          placeholder="Formatted text will appear here..."
+        />
         {formattedText && (
           <button
             onClick={copyToClipboard}
