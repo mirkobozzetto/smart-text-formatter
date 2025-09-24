@@ -1,45 +1,36 @@
 # Text Formatter
 
-A simple text formatter that helps structure your text by adding line breaks after punctuation marks. Buddy format your texts to make them breathe: [text-buddy.vercel.app](https://text-buddy.vercel.app/)
+A web application for formatting and enhancing text readability through multiple formatting modes and speed reading techniques.
+
+## Purpose
+
+This tool transforms raw text into more readable formats by applying intelligent formatting rules and offering specialized reading modes to improve comprehension and reading speed.
 
 ## Features
 
-- Adds a single line break after commas (,), semicolons (;), and colons (:)
-- Adds a double line break (paragraph) after periods (.), exclamation marks (!), and question marks (?)
-- Handles multiple consecutive punctuation marks
-- Copy formatted text to clipboard
+### Text Formatting Modes
 
-## How it works
+- **Conventional**: Adds line breaks after punctuation marks for improved readability
+- **Mobile**: Optimizes text for mobile screens with 45-60 characters per line
+- **Speed Reading**: Provides three sub-modes for enhanced reading speed
 
-Input text:
+### Speed Reading Techniques
 
-```
-Hello, how are you? I am fine! Yes: I am really good, you see; it's perfect.
-```
+- **RSVP (Rapid Serial Visual Presentation)**: Displays text word-by-word at adjustable speeds
+- **Bionic Reading**: Bolds the first part of each word to guide eye movement
+- **Text Chunking**: Breaks text into meaningful sentence-based chunks
 
-Output text:
+### Additional Features
 
-```
-Hello,
-how are you?
+- Fullscreen focus mode with blurred background
+- Auto-copy formatted text to clipboard
+- Real-time text metrics (character count, word count, reading time)
+- Persistent settings across sessions
 
-I am fine!
+## Use Cases
 
-Yes:
-I am really good,
-you see;
-it's perfect.
-```
-
-## Usage
-
-1. Paste your text in the input area
-2. Click "Format Text"
-3. The formatted text appears below
-4. Click "Copy" to copy the formatted text to your clipboard
-
-## Technologies
-
-- Next.js
-- TypeScript
-- Tailwind CSS
+- Format long-form text for better readability
+- Prepare text for mobile reading
+- Train speed reading with RSVP technique
+- Improve reading comprehension with bionic reading
+- Break down complex texts into digestible chunks
