@@ -28,22 +28,6 @@ export const TextArea = ({
     large: "min-h-[24rem] h-[24rem]",
   }[height];
 
-  const baseClasses = `
-    w-full px-4 py-3
-    border
-    rounded-2xl
-    resize-none
-    transition-all duration-200
-    placeholder:text-gray-400
-    text-black text-sm leading-relaxed
-    bg-white
-    outline-none
-    ${heightClass}
-    ${isFocused ? "border-gray-400" : "border-gray-300"}
-    ${readonly ? "cursor-default bg-gray-50" : ""}
-    ${className}
-  `;
-
   return (
     <div
       className={`relative rounded-2xl border ${isFocused ? "border-gray-400" : "border-gray-300"} overflow-hidden bg-white transition-all duration-200`}

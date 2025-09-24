@@ -24,8 +24,8 @@ export const TextChunkDisplay = ({ chunks }: TextChunkDisplayProps) => {
       <div className="bg-white rounded-2xl border border-gray-300 min-h-[300px] max-h-[500px] overflow-hidden">
         <div className="max-h-[500px] overflow-y-auto p-6">
           {chunks.length > 0 ? (
-            <div className="text-lg leading-relaxed text-black whitespace-pre-wrap">
-              {chunks.map((chunk, index) => {
+            <div className="flex flex-col gap-3">
+              {chunks.map((chunk) => {
                 // Handle line breaks
                 if (chunk.text === "\n") {
                   return "\n";
@@ -33,19 +33,16 @@ export const TextChunkDisplay = ({ chunks }: TextChunkDisplayProps) => {
 
                 // Handle regular chunks
                 return (
-                  <span
+                  <div
                     key={chunk.index}
-                    className={`inline-block m-1 px-3 py-1 rounded-lg border transition-all duration-200 hover:bg-gray-50 ${
+                    className={`w-full p-4 rounded-lg text-xl leading-relaxed text-black ${
                       chunk.isPhrase
-                        ? "border-gray-400 bg-gray-50"
-                        : "border-gray-300"
+                        ? "bg-blue-50 border border-blue-200"
+                        : "bg-gray-25 border border-gray-200"
                     }`}
                   >
-                    <span className="text-black">{chunk.text}</span>
-                    <span className="ml-2 text-xs text-gray-400">
-                      #{chunk.index + 1}
-                    </span>
-                  </span>
+                    {chunk.text}
+                  </div>
                 );
               })}
             </div>

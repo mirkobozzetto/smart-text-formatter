@@ -86,49 +86,36 @@ export const formatForBionic = (text: string): BionicWord[] => {
   return allWords;
 };
 
-// Text chunking formatter - break text into meaningful phrases
+// Text chunking formatter - break text into meaningful sentences/lines
 export const formatForChunking = (text: string): TextChunk[] => {
   if (!text.trim()) return [];
 
-  // Work with already formatted text, preserving line breaks
-  const lines = text.split("\n");
   const allChunks: TextChunk[] = [];
   let globalIndex = 0;
 
-  lines.forEach((line, lineIndex) => {
+  // Split by lines first to preserve paragraph structure
+  const lines = text.split("\n");
+
+  lines.forEach((line) => {
     if (!line.trim()) {
-      // Add empty line as a special marker
-      if (lineIndex > 0) {
-        allChunks.push({
-          text: "\n",
-          isPhrase: false,
-          index: globalIndex++,
-        });
-      }
+      // Skip empty lines - they're just spacing
       return;
     }
 
-    // Add line break between lines
-    if (lineIndex > 0 && allChunks.length > 0) {
-      allChunks.push({
-        text: "\n",
-        isPhrase: false,
-        index: globalIndex++,
-      });
-    }
+    // Split each line into sentences (keep punctuation with the sentence)
+    // Match sentences ending with punctuation, or phrases ending with comma/semicolon
+    const sentences = line.match(/[^.!?;]+[.!?;]?/g) || [line];
 
-    // Split by various punctuation and phrase boundaries
-    const chunks = line
-      .split(/([,.;:\-—()[\]{}!?]+\s*)/)
-      .filter((chunk) => chunk.trim().length > 0)
-      .map((chunk) => ({
-        text: chunk.trim(),
-        isPhrase: !/^[,.;:\-—()[\]{}!?]+\s*$/.test(chunk),
-        index: globalIndex++,
-      }));
-
-    // Add all chunks
-    allChunks.push(...chunks);
+    sentences.forEach((sentence) => {
+      const trimmed = sentence.trim();
+      if (trimmed) {
+        allChunks.push({
+          text: trimmed,
+          isPhrase: true, // All chunks are meaningful phrases now
+          index: globalIndex++,
+        });
+      }
+    });
   });
 
   return allChunks;

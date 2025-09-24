@@ -8,16 +8,15 @@ export const formatForConventional = (text: string): string => {
 
   // Apply sentence formatting rules intelligently
   // Handle quotes and punctuation properly:
-  // 1. If punctuation is followed by closing quotes, add break after quotes
+  // 1. If punctuation is followed by closing quotes, add break after quotes (if not already present)
   // 2. Otherwise add break after punctuation (if not already present)
-  // Also remove any spaces after the line break
+  // 3. Preserve multiple line breaks (user's intentional formatting)
   formatted = formatted
-    .replace(/([.!?]+)(["'»"'])\s*/g, "$1$2\n") // Punctuation + closing quote + remove trailing spaces
-    .replace(/([.!?]+)(?!["'»"'])\s*/g, "$1\n") // Punctuation alone + remove trailing spaces
-    .replace(/\n\s+/g, "\n"); // Clean up any spaces at the beginning of lines
+    .replace(/([.!?]+)(["'»"'])(?!\n)/g, "$1$2\n") // Punctuation + closing quote - add newline only if not present
+    .replace(/([.!?]+)(?!["'»"'\n])/g, "$1\n") // Punctuation alone - add newline only if not present
+    .replace(/\n +/g, "\n"); // Clean up spaces after line breaks (but preserve multiple newlines)
 
-  // Return formatted text without artificial line breaks
-  // Let the text flow naturally within paragraphs
+  // Return formatted text preserving user's intentional formatting
   return formatted.trim();
 };
 
