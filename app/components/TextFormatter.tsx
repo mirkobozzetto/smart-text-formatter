@@ -1,67 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import { formatText } from "../utils/textFormat";
+import { useTextFormatter } from "../hooks/useTextFormatter";
+import { useClipboard } from "../hooks/useClipboard";
+import { FormatterLayout } from "./organisms/FormatterLayout";
+import { TextFormatterContent } from "./organisms/TextFormatterContent";
 
 export const TextFormatter = () => {
-  const [inputText, setInputText] = useState("");
-  const [formattedText, setFormattedText] = useState("");
-  const [copied, setCopied] = useState(false);
+  const formatter = useTextFormatter();
 
-  const handleFormat = () => {
-    setFormattedText(formatText(inputText));
-    setCopied(false);
-  };
+  // Determine if we should trigger auto-copy
+  const shouldAutoCopy: boolean =
+    formatter.currentMode !== "speed-reading" &&
+    Boolean(formatter.formattedText) &&
+    formatter.formattedText !== formatter.debouncedInput;
 
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(formattedText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy text:", err);
-    }
-  };
+  const clipboard = useClipboard(formatter.formattedText, {
+    autoCopy: shouldAutoCopy,
+  });
 
   return (
-    <div className="space-y-4 w-full max-w-2xl">
-      <h1 className="font-bold text-2xl">Text Formatter</h1>
-
-      <textarea
-        className="p-4 border rounded w-full min-h-[160px] resize-y"
-        placeholder="Paste your text here..."
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-      />
-
-      <button
-        onClick={handleFormat}
-        className="bg-blue-500 hover:bg-blue-600 py-2 rounded w-full text-white"
-      >
-        Format Text
-      </button>
-
-      <div className="relative">
-        <textarea
-          className="p-4 border rounded w-full min-h-[160px] font-sans resize-y"
-          value={formattedText}
-          onChange={(e) => setFormattedText(e.target.value)}
-          placeholder="Formatted text will appear here..."
-        />
-        {formattedText && (
-          <button
-            onClick={copyToClipboard}
-            className={`absolute top-2 right-2 px-3 py-1 rounded text-sm
-              ${
-                copied
-                  ? "bg-green-500 text-white"
-                  : "bg-gray-100 hover:bg-gray-200"
-              }`}
-          >
-            {copied ? "Copied!" : "Copy"}
-          </button>
-        )}
-      </div>
-    </div>
+    <FormatterLayout
+      mode={formatter.currentMode}
+      onModeChange={formatter.setCurrentMode}
+    >
+      <TextFormatterContent formatter={formatter} clipboard={clipboard} />
+    </FormatterLayout>
   );
 };

@@ -1,31 +1,9 @@
-export const formatText = (
-  text: string,
-  mode: "mobile" | "conventional" | "speed-reading" = "conventional"
-) => {
+import { FORMATTER_CONFIG } from "../../constants";
+
+export const formatForMobile = (text: string): string => {
   if (!text.trim()) return "";
 
-  if (mode === "mobile") {
-    return formatForMobile(text);
-  }
-
-  if (mode === "speed-reading") {
-    return text; // Raw text for speed reading modes
-  }
-
-  // Default conventional formatting
-  let formatted = text.replace(/[\r\n]+/g, " ");
-
-  formatted = formatted
-    .replace(/([.!?]+)\s*/g, "$1\n\n")
-    .replace(/([,;:]+)\s*/g, "$1\n");
-
-  return formatted.trim();
-};
-
-// Mobile formatting helper
-const formatForMobile = (text: string): string => {
-  const minCharsPerLine = 45;
-  const maxCharsPerLine = 60;
+  const { minCharsPerLine, maxCharsPerLine } = FORMATTER_CONFIG.mobile;
 
   // Clean up the text - remove extra whitespace and normalize
   const cleaned = text.replace(/\s+/g, " ").trim();
@@ -69,3 +47,10 @@ const formatForMobile = (text: string): string => {
   // Join with single line breaks for mobile optimization
   return formattedLines.join("\n").trim();
 };
+
+export const getMobileStyleConfig = () => ({
+  fontSize: FORMATTER_CONFIG.mobile.fontSize,
+  lineHeight: FORMATTER_CONFIG.mobile.lineHeight,
+  fontFamily:
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+});
