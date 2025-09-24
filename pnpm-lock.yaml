@@ -7,6 +7,9 @@ settings:
 importers:
   .:
     dependencies:
+      framer-motion:
+        specifier: ^12.23.21
+        version: 12.23.21(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       next:
         specifier: ^15.5.0
         version: 15.5.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -16,6 +19,9 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.1.1(react@19.1.1)
+      zustand:
+        specifier: ^5.0.8
+        version: 5.0.8(@types/react@19.1.13)(react@19.1.1)
     devDependencies:
       "@tailwindcss/postcss":
         specifier: ^4.1.13
@@ -1409,6 +1415,23 @@ packages:
         integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==,
       }
 
+  framer-motion@12.23.21:
+    resolution:
+      {
+        integrity: sha512-UWDtzzPdRA3UpSNGril5HjUtPF1Uo/BCt5VKG/YQ8tVpSkAZ22+q8o+hYO0C1uDAZuotQjcfzsTsDtQxD46E/Q==,
+      }
+    peerDependencies:
+      "@emotion/is-prop-valid": "*"
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      "@emotion/is-prop-valid":
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   fs.realpath@1.0.0:
     resolution:
       {
@@ -2046,6 +2069,18 @@ packages:
         integrity: sha512-KZxYo1BUkWD2TVFLr0MQoM8vUUigWD3LlD83a/75BqC+4qE0Hb1Vo5v1FgcfaNXvfXzr+5EhQ6ing/CaBijTlw==,
       }
     engines: { node: ">= 18" }
+
+  motion-dom@12.23.21:
+    resolution:
+      {
+        integrity: sha512-5xDXx/AbhrfgsQmSE7YESMn4Dpo6x5/DTZ4Iyy4xqDvVHWvFVoV+V2Ri2S/ksx+D40wrZ7gPYiMWshkdoqNgNQ==,
+      }
+
+  motion-utils@12.23.6:
+    resolution:
+      {
+        integrity: sha512-eAWoPgr4eFEOFfg2WjIsMoqJTW6Z8MTUCgn/GZ3VRpClWBdnbjryiA3ZSNLyxCTmCQx4RmYX6jX1iWHbenUPNQ==,
+      }
 
   ms@2.1.3:
     resolution:
@@ -2745,6 +2780,27 @@ packages:
         integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==,
       }
     engines: { node: ">=10" }
+
+  zustand@5.0.8:
+    resolution:
+      {
+        integrity: sha512-gyPKpIaxY9XcO2vSMrLbiER7QMAMGOQZVRdJ6Zi782jkbzZygq5GI9nG8g+sMgitRtndwaBSl7uiqC49o1SSiw==,
+      }
+    engines: { node: ">=12.20.0" }
+    peerDependencies:
+      "@types/react": ">=18.0.0"
+      immer: ">=9.0.6"
+      react: ">=18.0.0"
+      use-sync-external-store: ">=1.2.0"
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
 
 snapshots:
   "@alloc/quick-lru@5.2.0": {}
@@ -3709,6 +3765,15 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
+  framer-motion@12.23.21(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
+    dependencies:
+      motion-dom: 12.23.21
+      motion-utils: 12.23.6
+      tslib: 2.8.0
+    optionalDependencies:
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
+
   fs.realpath@1.0.0: {}
 
   function-bind@1.1.2: {}
@@ -4045,6 +4110,12 @@ snapshots:
   minizlib@3.1.0:
     dependencies:
       minipass: 7.1.2
+
+  motion-dom@12.23.21:
+    dependencies:
+      motion-utils: 12.23.6
+
+  motion-utils@12.23.6: {}
 
   ms@2.1.3: {}
 
@@ -4520,3 +4591,8 @@ snapshots:
   yallist@5.0.0: {}
 
   yocto-queue@0.1.0: {}
+
+  zustand@5.0.8(@types/react@19.1.13)(react@19.1.1):
+    optionalDependencies:
+      "@types/react": 19.1.13
+      react: 19.1.1

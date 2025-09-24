@@ -16,15 +16,19 @@ import {
   formatForBionic,
   formatForChunking,
 } from "../lib/formatters";
+import { useFormatterStore } from "../stores/useFormatterStore";
 
 export const useTextFormatter = () => {
   // Core text state
   const [inputText, setInputText] = useState("");
   const [formattedText, setFormattedText] = useState("");
 
-  // Mode state
-  const [currentMode, setCurrentMode] =
-    useState<FormattingMode>("conventional");
+  // Mode state from Zustand store
+  const {
+    currentMode,
+    setCurrentMode: setStoreMode,
+    speedReadingWPM,
+  } = useFormatterStore();
   const [speedReadingSubMode, setSpeedReadingSubMode] =
     useState<SpeedReadingSubMode>("rsvp");
 
@@ -84,7 +88,7 @@ export const useTextFormatter = () => {
   }, [debouncedInput, currentMode, pushState]);
 
   const handleModeChange = (mode: FormattingMode) => {
-    setCurrentMode(mode);
+    setStoreMode(mode);
     if (mode === "speed-reading" && speedReadingSubMode === "rsvp") {
       rsvp.reset();
     }
@@ -117,5 +121,6 @@ export const useTextFormatter = () => {
     undo,
     redo,
     rsvp,
+    speedReadingWPM,
   };
 };
