@@ -45,7 +45,9 @@ export const TextArea = ({
   `;
 
   return (
-    <div className="relative">
+    <div
+      className={`relative rounded-2xl border ${isFocused ? "border-gray-400" : "border-gray-300"} overflow-hidden bg-white transition-all duration-200`}
+    >
       <textarea
         ref={textAreaRef}
         value={value}
@@ -54,7 +56,18 @@ export const TextArea = ({
         onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
         readOnly={readonly}
-        className={baseClasses}
+        className={`
+          w-full px-4 py-3
+          border-0
+          resize-none
+          placeholder:text-gray-400
+          text-black text-sm leading-relaxed
+          bg-white
+          outline-none
+          ${heightClass}
+          ${readonly ? "cursor-default bg-gray-50" : ""}
+          ${className}
+        `}
       />
     </div>
   );
