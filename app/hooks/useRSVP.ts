@@ -11,7 +11,7 @@ export const useRSVP = (words: string[], initialWPM: number = 400) => {
     intervalId: undefined,
   });
 
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const prevWordsLength = useRef(words.length);
 
   // Update words when they change - compare by length to avoid infinite loops
