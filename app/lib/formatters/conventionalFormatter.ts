@@ -1,61 +1,24 @@
-import {
-  FORMATTER_CONFIG,
-  SENTENCE_ENDINGS,
-  PHRASE_BREAKS,
-} from "../../constants";
+import { FORMATTER_CONFIG } from "../../constants";
 
 export const formatForConventional = (text: string): string => {
   if (!text.trim()) return "";
 
-  const { targetCharsPerLine, maxCharsPerLine } = FORMATTER_CONFIG.conventional;
+  // Normalize only multiple spaces (NOT line breaks)
+  let formatted = text.replace(/ +/g, " ").trim();
 
-  // Normalize whitespace
-  let formatted = text.replace(/\s+/g, " ").trim();
-
-  // Apply sentence and phrase formatting rules
+  // Apply sentence formatting rules intelligently
+  // Handle quotes and punctuation properly:
+  // 1. If punctuation is followed by closing quotes, add break after quotes
+  // 2. Otherwise add break after punctuation (if not already present)
+  // Also remove any spaces after the line break
   formatted = formatted
-    // Double line break after sentence endings
-    .replace(SENTENCE_ENDINGS, "$&\n\n")
-    // Single line break after phrase breaks
-    .replace(PHRASE_BREAKS, "$&\n");
+    .replace(/([.!?]+)(["'»"'])\s*/g, "$1$2\n") // Punctuation + closing quote + remove trailing spaces
+    .replace(/([.!?]+)(?!["'»"'])\s*/g, "$1\n") // Punctuation alone + remove trailing spaces
+    .replace(/\n\s+/g, "\n"); // Clean up any spaces at the beginning of lines
 
-  // Split into lines and optimize line lengths
-  const lines = formatted.split("\n");
-  const optimizedLines: string[] = [];
-
-  for (const line of lines) {
-    if (!line.trim()) {
-      optimizedLines.push("");
-      continue;
-    }
-
-    // If line is already good length, keep it
-    if (line.length <= maxCharsPerLine) {
-      optimizedLines.push(line);
-      continue;
-    }
-
-    // Break long lines at word boundaries near target length
-    const words = line.split(/\s+/);
-    let currentLine = "";
-
-    for (const word of words) {
-      const potentialLine = currentLine ? `${currentLine} ${word}` : word;
-
-      if (potentialLine.length > targetCharsPerLine && currentLine) {
-        optimizedLines.push(currentLine);
-        currentLine = word;
-      } else {
-        currentLine = potentialLine;
-      }
-    }
-
-    if (currentLine) {
-      optimizedLines.push(currentLine);
-    }
-  }
-
-  return optimizedLines.join("\n").trim();
+  // Return formatted text without artificial line breaks
+  // Let the text flow naturally within paragraphs
+  return formatted.trim();
 };
 
 export const getConventionalStyleConfig = () => ({
