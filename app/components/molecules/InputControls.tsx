@@ -29,10 +29,10 @@ export const InputControls = ({
       />
 
       <div className="flex space-x-1">
-        <ActionButton onClick={onUndo} disabled={!canUndo} variant="secondary">
+        <ActionButton onClick={onUndo} disabled={!canUndo} variant="default">
           Undo
         </ActionButton>
-        <ActionButton onClick={onRedo} disabled={!canRedo} variant="secondary">
+        <ActionButton onClick={onRedo} disabled={!canRedo} variant="default">
           Redo
         </ActionButton>
       </div>

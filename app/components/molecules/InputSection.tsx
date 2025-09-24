@@ -25,9 +25,11 @@ export const InputSection = ({
   onRedo,
 }: InputSectionProps) => {
   return (
-    <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+    <div>
       <div className="flex justify-between items-center mb-3 h-9">
-        <h2 className="text-sm font-semibold text-gray-900">Input</h2>
+        <h2 className="text-sm font-bold text-black uppercase tracking-wide">
+          Input
+        </h2>
         <InputControls
           autoCopyEnabled={autoCopyEnabled}
           onAutoCopyChange={onAutoCopyChange}

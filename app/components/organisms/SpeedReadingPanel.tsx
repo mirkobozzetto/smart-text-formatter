@@ -4,6 +4,8 @@ import { SpeedReadingSubMode, BionicWord, TextChunk } from "../../types";
 import { RSVPDisplay } from "../molecules/RSVPDisplay";
 import { BionicReadingDisplay } from "../molecules/BionicReadingDisplay";
 import { TextChunkDisplay } from "../molecules/TextChunkDisplay";
+import { motion } from "framer-motion";
+import { useRef, useState } from "react";
 
 interface SpeedReadingPanelProps {
   subMode: SpeedReadingSubMode;
@@ -61,30 +63,79 @@ export const SpeedReadingPanel = ({
   onToggleBionic,
   textChunks,
 }: SpeedReadingPanelProps) => {
+  const [isHovering, setIsHovering] = useState(false);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const modes = Object.entries(subModeConfig);
+  const selectedIndex = modes.findIndex(([mode]) => mode === subMode);
+
+  const getCursorPosition = () => {
+    const targetIndex =
+      isHovering && hoverIndex !== null ? hoverIndex : selectedIndex;
+    const targetTab = tabRefs.current[targetIndex];
+    if (!targetTab) return { left: 0, width: 0 };
+    return {
+      left: targetTab.offsetLeft,
+      width: targetTab.offsetWidth,
+    };
+  };
+
+  const { left, width } = getCursorPosition();
+
   return (
     <div className="space-y-6">
       {/* Sub-mode Switcher */}
-      <div className="bg-white rounded-lg p-4 border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <div>
+        <h3 className="text-sm font-bold text-black uppercase tracking-wide mb-4">
           Speed Reading Techniques
         </h3>
 
-        <div className="flex space-x-2">
-          {Object.entries(subModeConfig).map(([mode, config]) => (
+        <div
+          className="relative flex border-2 border-black rounded-full p-1 bg-white"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => {
+            setIsHovering(false);
+            setHoverIndex(null);
+          }}
+        >
+          <motion.div
+            className="absolute top-1 bottom-1 bg-black rounded-full"
+            initial={false}
+            animate={{ left, width }}
+            transition={{ type: "spring", stiffness: 500, damping: 35 }}
+          />
+
+          {modes.map(([mode, config], index) => (
             <button
               key={mode}
+              ref={(el) => {
+                tabRefs.current[index] = el;
+              }}
               onClick={() => onSubModeChange(mode as SpeedReadingSubMode)}
-              className={`
-                flex-1 px-3 py-2 rounded text-sm
-                ${
-                  subMode === mode
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }
-              `}
+              onMouseEnter={() => setHoverIndex(index)}
+              className="relative flex-1 px-4 py-2 rounded-full text-sm transition-colors duration-200 z-10"
             >
-              <div className="font-medium">{config.label}</div>
-              <div className="text-xs opacity-80">{config.description}</div>
+              <div
+                className={`font-bold uppercase text-xs transition-colors duration-200 ${
+                  (isHovering && hoverIndex === index) ||
+                  (!isHovering && subMode === mode)
+                    ? "text-white"
+                    : "text-black"
+                }`}
+              >
+                {config.label}
+              </div>
+              <div
+                className={`text-xs transition-colors duration-200 ${
+                  (isHovering && hoverIndex === index) ||
+                  (!isHovering && subMode === mode)
+                    ? "text-white opacity-90"
+                    : "text-gray-600"
+                }`}
+              >
+                {config.description}
+              </div>
             </button>
           ))}
         </div>

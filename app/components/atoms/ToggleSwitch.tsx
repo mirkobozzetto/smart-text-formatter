@@ -15,24 +15,38 @@ export const ToggleSwitch = ({
 }: ToggleSwitchProps) => {
   const dimensions =
     size === "small"
-      ? { switch: "h-4 w-7", ball: "h-2.5 w-2.5" }
-      : { switch: "h-6 w-11", ball: "h-4 w-4" };
+      ? { switch: "h-5 w-10", ball: "h-3 w-3", translate: "translate-x-5" }
+      : { switch: "h-6 w-12", ball: "h-4 w-4", translate: "translate-x-6" };
 
   return (
-    <div className="flex items-center space-x-1">
-      {label && <label className="text-xs text-gray-500">{label}</label>}
+    <div className="flex items-center space-x-2">
+      {label && (
+        <label className="text-xs font-medium text-black uppercase tracking-wide">
+          {label} {enabled ? "ON" : "OFF"}
+        </label>
+      )}
       <button
         onClick={() => onChange(!enabled)}
-        className={`relative inline-flex items-center rounded-full transition-colors ${
-          dimensions.switch
-        } ${enabled ? "bg-blue-500" : "bg-gray-300"}`}
+        className={`
+          relative inline-flex items-center rounded-full
+          transition-all duration-200 border-2
+          ${dimensions.switch}
+          ${enabled ? "bg-black border-black" : "bg-white border-black"}
+        `}
         role="switch"
         aria-checked={enabled}
       >
         <span
-          className={`inline-block transform rounded-full bg-white transition-transform ${
-            dimensions.ball
-          } ${enabled ? "translate-x-4" : "translate-x-1"}`}
+          className={`
+            inline-block transform rounded-full
+            transition-transform duration-200
+            ${dimensions.ball}
+            ${
+              enabled
+                ? `${dimensions.translate} bg-white`
+                : "translate-x-0.5 bg-black"
+            }
+          `}
         />
       </button>
     </div>

@@ -12,11 +12,13 @@ A simple text formatter that helps structure your text by adding line breaks aft
 ## How it works
 
 Input text:
+
 ```
 Hello, how are you? I am fine! Yes: I am really good, you see; it's perfect.
 ```
 
 Output text:
+
 ```
 Hello,
 how are you?

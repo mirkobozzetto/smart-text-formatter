@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { useFormatterStore } from "../stores/useFormatterStore";
 
 interface UseClipboardOptions {
   resetDelay?: number;
@@ -9,10 +10,10 @@ export const useClipboard = (
   text: string,
   options: UseClipboardOptions = {}
 ) => {
-  const { resetDelay = 2000, autoCopy = false } = options;
+  const { resetDelay = 2000 } = options;
 
   const [copied, setCopied] = useState(false);
-  const [autoCopyEnabled, setAutoCopyEnabled] = useState(autoCopy);
+  const { autoCopyEnabled, setAutoCopyEnabled } = useFormatterStore();
 
   const copyToClipboard = useCallback(
     async (textToCopy: string = text) => {
