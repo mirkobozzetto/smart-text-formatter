@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { FormattingMode } from "../types";
+import { FormattingMode, SpeedReadingSubMode } from "../types";
 
 interface FormatterState {
   currentMode: FormattingMode;
@@ -11,6 +11,9 @@ interface FormatterState {
 
   speedReadingWPM: number;
   setSpeedReadingWPM: (wpm: number) => void;
+
+  speedReadingSubMode: SpeedReadingSubMode;
+  setSpeedReadingSubMode: (mode: SpeedReadingSubMode) => void;
 }
 
 export const useFormatterStore = create<FormatterState>()(
@@ -27,6 +30,9 @@ export const useFormatterStore = create<FormatterState>()(
       // Speed reading
       speedReadingWPM: 400,
       setSpeedReadingWPM: (wpm) => set({ speedReadingWPM: wpm }),
+
+      speedReadingSubMode: "rsvp",
+      setSpeedReadingSubMode: (mode) => set({ speedReadingSubMode: mode }),
     }),
     {
       name: "text-formatter-storage",

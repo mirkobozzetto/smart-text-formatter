@@ -1,10 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import {
-  FormattingMode,
-  SpeedReadingSubMode,
-  BionicWord,
-  TextChunk,
-} from "../types";
+import { FormattingMode, BionicWord, TextChunk } from "../types";
 import { useDebounce } from "./useDebounce";
 import { useTextStats } from "./useTextStats";
 import { useUndoRedo } from "./useUndoRedo";
@@ -28,9 +23,9 @@ export const useTextFormatter = () => {
     currentMode,
     setCurrentMode: setStoreMode,
     speedReadingWPM,
+    speedReadingSubMode,
+    setSpeedReadingSubMode,
   } = useFormatterStore();
-  const [speedReadingSubMode, setSpeedReadingSubMode] =
-    useState<SpeedReadingSubMode>("rsvp");
 
   // Speed reading specific state
   const [bionicWords, setBionicWords] = useState<BionicWord[]>([]);
@@ -75,9 +70,10 @@ export const useTextFormatter = () => {
         formatted = formatForConventional(debouncedInput);
         break;
       case "speed-reading":
-        formatted = debouncedInput;
-        setBionicWords(formatForBionic(debouncedInput));
-        setTextChunks(formatForChunking(debouncedInput));
+        // Apply conventional formatting first to get proper line breaks
+        formatted = formatForConventional(debouncedInput);
+        setBionicWords(formatForBionic(formatted));
+        setTextChunks(formatForChunking(formatted));
         break;
       default:
         formatted = debouncedInput;

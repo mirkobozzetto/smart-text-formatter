@@ -5,8 +5,8 @@ export const formatForMobile = (text: string): string => {
 
   const { minCharsPerLine, maxCharsPerLine } = FORMATTER_CONFIG.mobile;
 
-  // Clean up the text - remove extra whitespace and normalize
-  const cleaned = text.replace(/\s+/g, " ").trim();
+  // Clean up the text - remove extra spaces but preserve line breaks
+  const cleaned = text.replace(/ +/g, " ").trim();
 
   // Split into sentences first to maintain sentence boundaries
   const sentences = cleaned.split(/([.!?]+\s*)/).filter(Boolean);

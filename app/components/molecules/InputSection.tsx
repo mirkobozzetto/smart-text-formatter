@@ -8,10 +8,6 @@ interface InputSectionProps {
   onChange: (value: string) => void;
   autoCopyEnabled: boolean;
   onAutoCopyChange: (enabled: boolean) => void;
-  canUndo: boolean;
-  canRedo: boolean;
-  onUndo: () => void;
-  onRedo: () => void;
 }
 
 export const InputSection = ({
@@ -19,10 +15,6 @@ export const InputSection = ({
   onChange,
   autoCopyEnabled,
   onAutoCopyChange,
-  canUndo,
-  canRedo,
-  onUndo,
-  onRedo,
 }: InputSectionProps) => {
   return (
     <div>
@@ -33,10 +25,6 @@ export const InputSection = ({
         <InputControls
           autoCopyEnabled={autoCopyEnabled}
           onAutoCopyChange={onAutoCopyChange}
-          canUndo={canUndo}
-          canRedo={canRedo}
-          onUndo={onUndo}
-          onRedo={onRedo}
         />
       </div>
       <TextArea

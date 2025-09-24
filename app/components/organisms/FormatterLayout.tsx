@@ -26,7 +26,7 @@ export const FormatterLayout = ({
               <TextBuddyLogo />
             </div>
             <h2 className="text-sm font-medium text-black uppercase tracking-wide mb-4">
-              Formatting Mode
+              Format Your Text & Start Reading Fast
             </h2>
             <ModeSwitcher currentMode={mode} onModeChange={onModeChange} />
           </div>

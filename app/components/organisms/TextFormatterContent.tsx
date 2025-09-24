@@ -66,10 +66,6 @@ export const TextFormatterContent = ({
             onChange={formatter.setInputText}
             autoCopyEnabled={clipboard.autoCopyEnabled}
             onAutoCopyChange={clipboard.setAutoCopyEnabled}
-            canUndo={formatter.canUndo}
-            canRedo={formatter.canRedo}
-            onUndo={formatter.undo}
-            onRedo={formatter.redo}
           />
           <TextStats stats={formatter.textStats} />
         </div>

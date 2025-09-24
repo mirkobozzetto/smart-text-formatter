@@ -34,30 +34,3 @@ export const UI_CONSTANTS = {
   TRANSITION_DURATION: "transition-all duration-200",
   RSVP_DISPLAY_DURATION: (wpm: number) => 60000 / wpm, // milliseconds per word
 } as const;
-
-export const THEME_COLORS = {
-  primary: {
-    50: "bg-blue-50",
-    500: "bg-blue-500",
-    600: "bg-blue-600",
-    text: "text-blue-600",
-  },
-  success: {
-    500: "bg-green-500",
-    text: "text-green-600",
-  },
-  gray: {
-    100: "bg-gray-100",
-    200: "bg-gray-200",
-    300: "bg-gray-300",
-    500: "bg-gray-500",
-    700: "bg-gray-700",
-    900: "bg-gray-900",
-  },
-  dark: {
-    bg: "dark:bg-gray-900",
-    text: "dark:text-gray-100",
-    border: "dark:border-gray-700",
-    card: "dark:bg-gray-800",
-  },
-} as const;

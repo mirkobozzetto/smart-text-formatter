@@ -17,94 +17,121 @@ export const formatForBionic = (text: string): BionicWord[] => {
   if (!text.trim()) return [];
 
   const { bionicBoldPercentage } = FORMATTER_CONFIG.speedReading;
-  const words = text.split(/\s+/).filter((word) => word.length > 0);
+  // Process text line by line to preserve formatting
+  const lines = text.split("\n");
+  const allWords: BionicWord[] = [];
 
-  return words.map((word) => {
-    // Skip very short words or words that are mostly punctuation
-    if (word.length <= 2 || /^[^\w]*$/.test(word)) {
-      return {
-        original: word,
+  lines.forEach((line, lineIndex) => {
+    if (lineIndex > 0) {
+      // Add line break marker
+      allWords.push({
+        original: "\n",
         bold: "",
-        normal: word,
-      };
+        normal: "\n",
+      });
     }
 
-    // Extract letters only for calculating bold portion
-    const letters = word.replace(/[^\w]/g, "");
-    const boldLength = Math.max(
-      1,
-      Math.ceil(letters.length * (bionicBoldPercentage / 100))
-    );
+    const words = line.split(/\s+/).filter((word) => word.length > 0);
 
-    // Find the position after the bold letters in the original word
-    let letterCount = 0;
-    let splitIndex = 0;
+    words.forEach((word) => {
+      // Skip words that are only punctuation
+      if (/^[^\w]*$/.test(word)) {
+        allWords.push({
+          original: word,
+          bold: "",
+          normal: word,
+        });
+        return;
+      }
 
-    for (let i = 0; i < word.length; i++) {
-      if (/\w/.test(word[i])) {
-        letterCount++;
-        if (letterCount === boldLength) {
-          splitIndex = i + 1;
-          break;
+      // For very short words (1-2 letters), bold the first letter
+      if (word.length <= 2) {
+        allWords.push({
+          original: word,
+          bold: word.slice(0, 1),
+          normal: word.slice(1),
+        });
+        return;
+      }
+
+      // Extract letters only for calculating bold portion
+      const letters = word.replace(/[^\w]/g, "");
+      const boldLength = Math.max(
+        1,
+        Math.ceil(letters.length * (bionicBoldPercentage / 100))
+      );
+
+      // Find the position after the bold letters in the original word
+      let letterCount = 0;
+      let splitIndex = 0;
+
+      for (let i = 0; i < word.length; i++) {
+        if (/\w/.test(word[i])) {
+          letterCount++;
+          if (letterCount === boldLength) {
+            splitIndex = i + 1;
+            break;
+          }
         }
       }
-    }
 
-    return {
-      original: word,
-      bold: word.slice(0, splitIndex),
-      normal: word.slice(splitIndex),
-    };
+      allWords.push({
+        original: word,
+        bold: word.slice(0, splitIndex),
+        normal: word.slice(splitIndex),
+      });
+    });
   });
+
+  return allWords;
 };
 
 // Text chunking formatter - break text into meaningful phrases
 export const formatForChunking = (text: string): TextChunk[] => {
   if (!text.trim()) return [];
 
-  const cleaned = text.replace(/\s+/g, " ").trim();
+  // Work with already formatted text, preserving line breaks
+  const lines = text.split("\n");
+  const allChunks: TextChunk[] = [];
+  let globalIndex = 0;
 
-  // Split by various punctuation and phrase boundaries
-  const chunks = cleaned
-    .split(/([,.;:\-—()[\]{}!?]+\s*)/)
-    .filter((chunk) => chunk.trim().length > 0)
-    .map((chunk, index) => ({
-      text: chunk,
-      isPhrase: !/^[,.;:\-—()[\]{}!?]+\s*$/.test(chunk),
-      index,
-    }));
-
-  // Combine very short chunks with adjacent ones
-  const optimizedChunks: TextChunk[] = [];
-  let currentChunk = "";
-  let isCurrentPhrase = true;
-
-  for (const chunk of chunks) {
-    if (chunk.text.trim().length <= 3 && currentChunk) {
-      currentChunk += chunk.text;
-    } else if (currentChunk.length > 50) {
-      optimizedChunks.push({
-        text: currentChunk,
-        isPhrase: isCurrentPhrase,
-        index: optimizedChunks.length,
-      });
-      currentChunk = chunk.text;
-      isCurrentPhrase = chunk.isPhrase;
-    } else {
-      currentChunk += chunk.text;
-      if (chunk.isPhrase) isCurrentPhrase = true;
+  lines.forEach((line, lineIndex) => {
+    if (!line.trim()) {
+      // Add empty line as a special marker
+      if (lineIndex > 0) {
+        allChunks.push({
+          text: "\n",
+          isPhrase: false,
+          index: globalIndex++,
+        });
+      }
+      return;
     }
-  }
 
-  if (currentChunk) {
-    optimizedChunks.push({
-      text: currentChunk,
-      isPhrase: isCurrentPhrase,
-      index: optimizedChunks.length,
-    });
-  }
+    // Add line break between lines
+    if (lineIndex > 0 && allChunks.length > 0) {
+      allChunks.push({
+        text: "\n",
+        isPhrase: false,
+        index: globalIndex++,
+      });
+    }
 
-  return optimizedChunks;
+    // Split by various punctuation and phrase boundaries
+    const chunks = line
+      .split(/([,.;:\-—()[\]{}!?]+\s*)/)
+      .filter((chunk) => chunk.trim().length > 0)
+      .map((chunk) => ({
+        text: chunk.trim(),
+        isPhrase: !/^[,.;:\-—()[\]{}!?]+\s*$/.test(chunk),
+        index: globalIndex++,
+      }));
+
+    // Add all chunks
+    allChunks.push(...chunks);
+  });
+
+  return allChunks;
 };
 
 export const getSpeedReadingStyleConfig = () => ({

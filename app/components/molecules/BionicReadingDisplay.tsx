@@ -32,20 +32,31 @@ export const BionicReadingDisplay = ({
       {/* Text Display */}
       <div className="bg-white rounded-2xl p-6 border border-gray-300 min-h-[300px] max-h-[500px] overflow-y-auto">
         {bionicWords.length > 0 ? (
-          <div className="text-lg leading-relaxed text-black">
-            {bionicWords.map((word, index) => (
-              <span key={index}>
-                {isEnabled ? (
-                  <>
-                    <span className="font-bold">{word.bold}</span>
-                    <span>{word.normal}</span>
-                  </>
-                ) : (
-                  word.original
-                )}
-                {index < bionicWords.length - 1 && " "}
-              </span>
-            ))}
+          <div className="text-lg leading-relaxed text-black whitespace-pre-wrap">
+            {bionicWords.map((word, index) => {
+              // Handle line breaks
+              if (word.original === "\n") {
+                return "\n";
+              }
+
+              // Handle regular words
+              return (
+                <span key={index}>
+                  {isEnabled ? (
+                    <>
+                      <span className="font-bold">{word.bold}</span>
+                      <span>{word.normal}</span>
+                    </>
+                  ) : (
+                    word.original
+                  )}
+                  {/* Add space after word unless it's the last word or next is a line break */}
+                  {index < bionicWords.length - 1 &&
+                    bionicWords[index + 1].original !== "\n" &&
+                    " "}
+                </span>
+              );
+            })}
           </div>
         ) : (
           <div className="flex items-center justify-center h-full text-gray-500">

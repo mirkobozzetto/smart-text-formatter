@@ -114,7 +114,7 @@ export const SpeedReadingPanel = ({
               }}
               onClick={() => onSubModeChange(mode as SpeedReadingSubMode)}
               onMouseEnter={() => setHoverIndex(index)}
-              className="relative flex-1 px-4 py-2 rounded-full text-sm transition-colors duration-200 z-10"
+              className="relative flex-1 px-4 py-2 rounded-full text-sm transition-colors duration-200 z-10 cursor-pointer"
             >
               <div
                 className={`font-bold uppercase text-xs transition-colors duration-200 ${
